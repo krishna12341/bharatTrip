@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-12 col-xl-8">
+    <div class="card shadow-sm p-4">
+      <h3>AI Assistant</h3>
+      <p class="text-muted">Ask questions about refunds, escalations, finance bottlenecks, and more.</p>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Ask the assistant</label>
+          <textarea name="prompt" class="form-control" rows="4" required>{{ prompt or '' }}</textarea>
+        </div>
+        <button class="btn btn-primary">Send</button>
+      </form>
+      {% if answer is not none %}
+      <div class="mt-4 alert alert-light border">
+        <h6>Answer</h6>
+        <p>{{ answer }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-12 col-xl-4">
+    <div class="card shadow-sm p-4">
+      <h5>AI Tips</h5>
+      <ul>
+        <li>Show refunds pending more than 7 days</li>
+        <li>Summarize today’s refund activity</li>
+        <li>Explain the top escalation reasons</li>
+        <li>Predict likely escalations</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

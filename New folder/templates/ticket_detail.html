@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h3>{{ ticket.ticket_number }}</h3>
+          <p class="text-muted mb-1">{{ ticket.customer_name }} — {{ ticket.customer_email }}</p>
+          <span class="badge bg-info text-dark">{{ ticket.status }}</span>
+        </div>
+        <div>
+          <p class="mb-1">Priority: <strong>{{ ticket.priority }}</strong></p>
+          <p class="mb-0">Amount: <strong>{{ ticket.currency }} {{ ticket.refund_amount }}</strong></p>
+        </div>
+      </div>
+      <hr />
+      <div class="row g-3">
+        <div class="col-md-6">
+          <h6>Booking ID</h6>
+          <p>{{ ticket.booking_id }}</p>
+        </div>
+        <div class="col-md-6">
+          <h6>Agent</h6>
+          <p>{{ ticket.agent_name }}</p>
+        </div>
+        <div class="col-md-6">
+          <h6>Booking Date</h6>
+          <p>{{ ticket.booking_date or 'N/A' }}</p>
+        </div>
+        <div class="col-md-6">
+          <h6>Cancellation Date</h6>
+          <p>{{ ticket.cancellation_date or 'N/A' }}</p>
+        </div>
+      </div>
+      <div class="mt-3">
+        <h6>Reason</h6>
+        <p>{{ ticket.reason }}</p>
+      </div>
+      <div class="mt-3">
+        <h6>Support Notes</h6>
+        <p>{{ ticket.support_notes }}</p>
+      </div>
+      <div class="mt-3">
+        <h6>Finance Notes</h6>
+        <p>{{ ticket.finance_notes }}</p>
+      </div>
+      <div class="mt-3">
+        <h6>Attachments</h6>
+        <ul>
+          {% for file in ticket.get_attachments() %}
+          <li><a href="{{ url_for('static', filename='uploads/' ~ file) }}" target="_blank">{{ file }}</a></li>
+          {% else %}
+          <li class="text-muted">No attachments uploaded.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+      <h5>Activity Timeline</h5>
+      <ul class="timeline">
+        {% for entry in audit_logs %}
+        <li>
+          <strong>{{ entry.action }}</strong>
+          <p class="mb-1"><small>{{ entry.user.username }} • {{ entry.created_at.strftime('%Y-%m-%d %H:%M') }}</small></p>
+          <p class="mb-0"><small>{{ entry.comment or '' }}</small></p>
+        </li>
+        {% else %}
+        <li><em>No audit activity recorded yet.</em></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm p-4 mb-4">
+      <h5>Update Ticket</h5>
+      <form method="post" action="{{ url_for('tickets.update_ticket', ticket_id=ticket.id) }}">
+        {% if current_user.role == 'finance' %}
+        <div class="mb-3">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-select">
+            {% for status in ['Finance Review', 'Approved', 'Payment Initiated', 'Refund Paid', 'Closed', 'Rejected'] %}
+            <option value="{{ status }}" {% if ticket.status == status %}selected{% endif %}>{{ status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Approved Amount</label>
+          <input name="approved_amount" type="number" step="0.01" class="form-control" value="{{ ticket.approved_amount or '' }}" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Payment Reference</label>
+          <input name="payment_reference" class="form-control" value="{{ ticket.payment_reference or '' }}" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Payment Date</label>
+          <input name="payment_date" type="date" class="form-control" value="{{ ticket.payment_date or '' }}" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Finance Notes</label>
+          <textarea name="finance_notes" class="form-control" rows="3">{{ ticket.finance_notes or '' }}</textarea>
+        </div>
+        <button class="btn btn-success w-100">Save</button>
+        {% else %}
+        <p class="text-muted">Finance users can update status and payment details here.</p>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

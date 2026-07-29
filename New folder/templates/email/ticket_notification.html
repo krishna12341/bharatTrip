@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <h2>{{ event }}</h2>
+    <p>Hello {{ ticket.customer_name }},</p>
+    <p>Your refund ticket <strong>{{ ticket.ticket_number }}</strong> is currently in <strong>{{ ticket.status }}</strong> status.</p>
+    <ul>
+      <li><strong>Booking ID:</strong> {{ ticket.booking_id }}</li>
+      <li><strong>Refund Amount:</strong> {{ ticket.currency }} {{ ticket.refund_amount }}</li>
+      <li><strong>Approved Amount:</strong> {{ ticket.approved_amount or 'Pending' }}</li>
+      <li><strong>Payment Reference:</strong> {{ ticket.payment_reference or 'N/A' }}</li>
+    </ul>
+    <p>Expected timeline will be shared via the platform. Please contact {{ support_contact }} for any questions.</p>
+    <p>Thanks,<br />BharatTrip Support</p>
+  </body>
+</html>

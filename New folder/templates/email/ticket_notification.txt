@@ -1,0 +1,16 @@
+{{ event }}
+
+Hello {{ ticket.customer_name }},
+
+Your refund ticket {{ ticket.ticket_number }} is currently in {{ ticket.status }} status.
+
+Booking ID: {{ ticket.booking_id }}
+Refund Amount: {{ ticket.currency }} {{ ticket.refund_amount }}
+Approved Amount: {{ ticket.approved_amount or 'Pending' }}
+Payment Reference: {{ ticket.payment_reference or 'N/A' }}
+
+Expected timeline will be shared via the platform.
+Please contact {{ support_contact }} for any questions.
+
+Thanks,
+BharatTrip Support

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h3>Audit Logs</h3>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>User</th>
+        <th>Action</th>
+        <th>Old Value</th>
+        <th>New Value</th>
+        <th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for audit in audits %}
+      <tr>
+        <td>{{ audit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{{ audit.user.username }}</td>
+        <td>{{ audit.action }}</td>
+        <td>{{ audit.old_value or '-' }}</td>
+        <td>{{ audit.new_value or '-' }}</td>
+        <td>{{ audit.comment or '-' }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" class="text-center text-muted">No audit entries found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

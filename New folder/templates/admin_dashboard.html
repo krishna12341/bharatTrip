@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm p-4">
+      <h3>Admin Console</h3>
+      <p class="text-muted">Manage users, SMTP settings, SLA rules, audit logs and company configuration.</p>
+      <a class="btn btn-primary" href="{{ url_for('admin.add_user') }}">Create User</a>
+      <a class="btn btn-outline-secondary ms-2" href="{{ url_for('admin.settings') }}">Admin Settings</a>
+      <a class="btn btn-outline-info ms-2" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a>
+    </div>
+    <div class="card shadow-sm p-4 mt-4">
+      <h5>Team accounts</h5>
+      <table class="table">
+        <thead><tr><th>Username</th><th>Role</th><th>Email</th></tr></thead>
+        <tbody>
+          {% for user in users %}
+          <tr><td>{{ user.username }}</td><td>{{ user.role }}</td><td>{{ user.email }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

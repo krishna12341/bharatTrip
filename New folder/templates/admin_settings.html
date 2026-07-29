@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h3>Admin Settings</h3>
+  <form method="post">
+    <div class="row g-3">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">SMTP Host</label>
+        <input name="SMTP_SERVER" class="form-control" value="{{ settings.SMTP_SERVER or '' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">SMTP Port</label>
+        <input name="SMTP_PORT" class="form-control" value="{{ settings.SMTP_PORT or '' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">SMTP Username</label>
+        <input name="SMTP_USERNAME" class="form-control" value="{{ settings.SMTP_USERNAME or '' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">SMTP Password</label>
+        <input name="SMTP_PASSWORD" type="password" class="form-control" value="{{ settings.SMTP_PASSWORD or '' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Sender Email</label>
+        <input name="EMAIL_SENDER" class="form-control" value="{{ settings.EMAIL_SENDER or '' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Sender Name</label>
+        <input name="EMAIL_SENDER_NAME" class="form-control" value="{{ settings.EMAIL_SENDER_NAME or '' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Default Currency</label>
+        <input name="DEFAULT_CURRENCY" class="form-control" value="{{ settings.DEFAULT_CURRENCY or 'INR' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">SLA Days</label>
+        <input name="SLA_DAYS" type="number" class="form-control" value="{{ settings.SLA_DAYS or '3' }}" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Default Timezone</label>
+        <input name="DEFAULT_TIMEZONE" class="form-control" value="{{ settings.DEFAULT_TIMEZONE or 'Asia/Kolkata' }}" />
+      </div>
+    </div>
+    <button class="btn btn-primary mt-3">Save Settings</button>
+  </form>
+</div>
+<div class="card shadow-sm p-4 mt-3">
+  <h5>Send Test Email</h5>
+  <form method="post" action="{{ url_for('admin.send_test_email') }}">
+    <div class="row g-3">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Recipient Email</label>
+        <input name="test_recipient" class="form-control" value="{{ settings.EMAIL_SENDER or settings.SMTP_USERNAME or '' }}" placeholder="youremail@example.com" />
+      </div>
+    </div>
+    <button class="btn btn-secondary mt-2">Send Test Email</button>
+  </form>
+</div>
+{% endblock %}

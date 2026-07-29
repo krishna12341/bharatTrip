@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3">Refund Tickets</h1>
+    {% if filters %}
+    <p class="text-muted">Filtered results</p>
+    {% endif %}
+  </div>
+  <a href="{{ url_for('tickets.create_ticket') }}" class="btn btn-primary">Create Refund Ticket</a>
+</div>
+
+<div class="table-responsive shadow-sm rounded bg-white p-3">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Ticket</th>
+        <th>Customer</th>
+        <th>Booking</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Amount</th>
+        <th>Assigned</th>
+        <th>Updated</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ticket in tickets %}
+      <tr>
+        <td>{{ ticket.ticket_number }}</td>
+        <td>{{ ticket.customer_name }}<br><small>{{ ticket.customer_email }}</small></td>
+        <td>{{ ticket.booking_id }}</td>
+        <td>{{ ticket.status }}</td>
+        <td>{{ ticket.priority }}</td>
+        <td>{{ ticket.currency }} {{ ticket.refund_amount }}</td>
+        <td>{{ ticket.assigned_user.username if ticket.assigned_user else 'Unassigned' }}</td>
+        <td>{{ ticket.updated_at.strftime('%Y-%m-%d') }}</td>
+        <td><a href="{{ url_for('tickets.view_ticket', ticket_id=ticket.id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="9" class="text-center text-muted">No refund tickets found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

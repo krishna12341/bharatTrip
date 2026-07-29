@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-12 col-xl-8">
+    <div class="row g-4">
+      <div class="col-6">
+        <div class="card stats-card shadow-sm p-4">
+          <h5>Total Refund Requests</h5>
+          <h2>{{ counts.total }}</h2>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card stats-card shadow-sm p-4">
+          <h5>Pending Refunds</h5>
+          <h2>{{ counts.pending }}</h2>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card stats-card shadow-sm p-4">
+          <h5>Approved Refunds</h5>
+          <h2>{{ counts.approved }}</h2>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card stats-card shadow-sm p-4">
+          <h5>Paid Refunds</h5>
+          <h2>{{ counts.paid }}</h2>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card stats-card shadow-sm p-4">
+          <h5>Rejected Refunds</h5>
+          <h2>{{ counts.rejected }}</h2>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card stats-card shadow-sm p-4">
+          <h5>Escalated Tickets</h5>
+          <h2>{{ counts.escalated }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-xl-4">
+    <div class="card shadow-sm p-4">
+      <h5>Quick Actions</h5>
+      <div class="list-group list-group-flush mt-3">
+        <a class="list-group-item list-group-item-action" href="{{ url_for('tickets.list_tickets') }}">View All Tickets</a>
+        <a class="list-group-item list-group-item-action" href="{{ url_for('tickets.create_ticket') }}">Create New Refund</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm mt-4 p-4">
+  <h5>Ticket Status Distribution</h5>
+  <div class="chart-container">
+    <canvas id="statusChart"></canvas>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const statusLabels = {{ status_counts.keys() | list | tojson }};
+  const statusData = {{ status_counts.values() | list | tojson }};
+  const ctx = document.getElementById('statusChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: statusLabels,
+        datasets: [{
+          data: statusData,
+          backgroundColor: ['#0d6efd', '#6f42c1', '#fd7e14', '#198754', '#0dcaf0', '#6610f2', '#d63384', '#dc3545']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { usePointStyle: true }
+          }
+        },
+        layout: { padding: 8 }
+      }
+    });
+  }
+</script>
+{% endblock %}

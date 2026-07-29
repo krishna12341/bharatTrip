@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h3>Support Center</h3>
+  <p class="text-muted">Welcome to the support page. Use this space to find guidance or submit urgent refund requests.</p>
+  <div class="list-group list-group-flush">
+    <a class="list-group-item list-group-item-action" href="{{ url_for('tickets.create_ticket') }}">Create a new refund ticket</a>
+    <a class="list-group-item list-group-item-action" href="{{ url_for('tickets.list_tickets') }}">View all refund tickets</a>
+    <a class="list-group-item list-group-item-action" href="{{ url_for('ai.chat') }}">Ask the AI assistant for help</a>
+  </div>
+  <div class="mt-4">
+    <h5>Contact</h5>
+    <p>If you need urgent help, reach out to your finance or admin team directly.</p>
+  </div>
+</div>
+{% endblock %}
