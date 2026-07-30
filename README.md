@@ -1,350 +1,112 @@
-# 🚀 BharatTrip Refund Management System
+# BharatTrip Refund Management System
 
-A modern **Refund Management System** built with **Flask** that allows Support and Finance teams to manage refund requests from a single platform.
+A Flask-based refund ticket management application for BharatTrip. It supports role-based access control for Admin, Support, and Finance users, tracks refund tickets in a shared workflow, stores audit logs, sends email notifications via SMTP, and includes AI integration points.
 
-## ✨ Features
+## Features
 
-- 🔐 User Authentication (Login & Logout)
-- 👥 Role-Based Access Control (Admin, Support, Finance)
-- 🎫 Refund Ticket Management
-- 📊 Dashboard with Refund Statistics
-- 📧 SMTP Email Notifications
-- 🤖 AI Assistant (OpenAI Integration)
-- 📁 CSV-Based Data Storage
-- 📝 Activity Logs
-- 📎 File Upload Support
-- 🔍 Search & Filters
-- 📈 Reports & Analytics
+- Admin / Support / Finance roles
+- Secure login and logout
+- Refund ticket creation and tracking
+- Shared single ticket workflow for Support and Finance
+- Email notifications via SMTP when tickets are created
+- Audit logs and email logs
+- Configurable SMTP and application settings via environment variables
+- SQLite storage with a repository-based structure
+- Deployment-ready for PythonAnywhere
 
----
+## Project Structure
 
-# 📁 Project Structure
+- `app.py` — main Flask application
+- `config.py` — application configuration using environment variables
+- `models.py` — SQLAlchemy models for users, tickets, audit logs, email logs, and settings
+- `repositories.py` — data access layer for users, tickets, audits, and email logs
+- `helpers.py` — shared utilities like role-based access decorators
+- `services/` — application services for email and AI
+- `blueprints/` — Flask blueprints for auth, dashboard, tickets, admin, AI, and support
+- `templates/` — Jinja2 templates for UI pages
+- `static/` — static assets such as CSS and uploads
+- `.env.example` — example environment variables for local setup
 
-```
-bharattrip-refund-management/
-│
-├── app.py
-├── requirements.txt
-├── config.py
-├── .env.example
-│
-├── data/
-│   ├── tickets.csv
-│   ├── users.csv
-│   ├── activity_logs.csv
-│   ├── email_logs.csv
-│   └── settings.csv
-│
-├── templates/
-├── static/
-├── uploads/
-└── README.md
-```
+## Requirements
 
----
-
-# 📋 Prerequisites
-
-Before running the project, install:
-
-- Python 3.10 or later
-- pip
-- Git
-
-Verify installation:
-
-```bash
-python --version
-pip --version
-git --version
-```
-
----
-
-# ⬇️ Clone the Repository
-
-```bash
-git clone https://github.com/your-username/bharattrip-refund-management.git
-
-cd bharattrip-refund-management
-```
-
----
-
-# 🐍 Create a Virtual Environment
-
-### Windows
-
-```bash
-python -m venv venv
-
-venv\Scripts\activate
-```
-
-### macOS/Linux
-
-```bash
-python3 -m venv venv
-
-source venv/bin/activate
-```
-
----
-
-# 📦 Install Dependencies
+Install dependencies with:
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+## Local Setup
 
-# ⚙️ Environment Variables
-
-Create a file named
-
-```
-.env
-```
-
-Copy the contents from
-
-```
-.env.example
-```
-
-Example
-
-```env
-SECRET_KEY=your-secret-key
-
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-
-OPENAI_API_KEY=your-openai-api-key
-```
-
----
-
-# 📂 Data Files
-
-The application stores data in CSV files inside the **data/** directory.
-
-Required files:
-
-```
-data/
-├── tickets.csv
-├── users.csv
-├── activity_logs.csv
-├── email_logs.csv
-└── settings.csv
-```
-
-If these files don't exist, create empty CSV files with the required headers.
-
----
-
-# 👤 Default Admin User
-
-Create the first admin user by adding it to
-
-```
-data/users.csv
-```
-
-Example
-
-```csv
-id,name,email,password,role
-1,Admin,admin@example.com,admin123,admin
-```
-
-> **Note:** Change the default password after the first login.
-
----
-
-# ▶️ Run the Application
+1. Copy `.env.example` to `.env`.
+2. Update `.env` with your SMTP and app configuration.
+3. Run the app:
 
 ```bash
 python app.py
 ```
 
-or
+4. Open the app in your browser:
 
-```bash
-flask run
-```
-
----
-
-# 🌐 Open in Browser
-
-Visit
-
-```
+```text
 http://127.0.0.1:5000
 ```
 
-or
+## Sample Users
 
-```
-http://localhost:5000
-```
+- `admin / admin123`
+- `support / support123`
+- `finance / finance123`
 
----
+## Environment Variables
 
-# 📧 SMTP Email Configuration
+Use `.env` or platform environment variables to configure:
 
-This project uses **Nodemailer-compatible SMTP settings** via Flask.
+- `SECRET_KEY`
+- `DATABASE_URL`
+- `SMTP_SERVER`
+- `SMTP_PORT`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `SMTP_USE_TLS`
+- `SMTP_USE_SSL`
+- `EMAIL_SENDER`
+- `EMAIL_SENDER_NAME`
+- `DEFAULT_CURRENCY`
+- `SLA_DAYS`
+- `DEFAULT_TIMEZONE`
+- `OPENAI_API_KEY`
+- `PASSWORD_RESET_EXPIRES`
 
-Example Gmail configuration:
+## PythonAnywhere Deployment
 
-```
-SMTP Host:
-smtp.gmail.com
-
-Port:
-587
-
-Username:
-your-email@gmail.com
-
-Password:
-Google App Password
-```
-
----
-
-# 🤖 OpenAI Integration
-
-Add your OpenAI API Key inside
-
-```
-.env
-```
-
-```env
-OPENAI_API_KEY=xxxxxxxxxxxxxxxx
-```
-
-The AI Assistant can:
-
-- Summarize refund activity
-- Detect pending refunds
-- Explain escalation trends
-- Generate operational insights
-
----
-
-# 📊 Available Roles
-
-### Admin
-
-- Manage Users
-- Configure SMTP
-- View Reports
-- Manage Settings
-
-### Support
-
-- Create Tickets
-- Update Customer Details
-- Upload Documents
-- Send Customer Updates
-
-### Finance
-
-- Approve Refunds
-- Reject Refunds
-- Update Payment Status
-- Add Payment Reference
-
----
-
-# 📁 CSV Storage
-
-This application uses CSV files as the local database.
-
-Advantages
-
-- No database installation required
-- Easy to inspect and modify
-- Ideal for demos and small teams
-
-The architecture is designed so CSV storage can later be replaced with PostgreSQL or MySQL with minimal code changes.
-
----
-
-# 🚀 Deploy on PythonAnywhere
-
-1. Upload the project to PythonAnywhere.
-2. Create a virtual environment.
-3. Install dependencies:
-
-```bash
-pip install -r requirements.txt
-pip install gunicorn
-```
-
-4. Configure the WSGI file:
+1. Upload the project files to PythonAnywhere.
+2. Create a virtual environment and install dependencies.
+3. Configure the WSGI file to import the app:
 
 ```python
 import sys
 
-path = '/home/yourusername/bharattrip-refund-management'
-
+path = '/home/yourusername/bharattrip'
 if path not in sys.path:
     sys.path.insert(0, path)
 
 from app import app as application
 ```
 
-5. Add environment variables.
-6. Reload the application.
+4. Set the required environment variables in the PythonAnywhere Web tab.
+5. Reload the web app.
 
----
+## Notes
 
-# 🛠 Troubleshooting
+- Do not commit `.env` or `app.db` to source control.
+- Add `.env` and `app.db` to `.gitignore`.
+- For production, consider upgrading from SQLite to PostgreSQL or MySQL.
 
-### ModuleNotFoundError
+## Future Improvements
 
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### SMTP Authentication Failed
-
-- Verify SMTP credentials.
-- Use a Gmail App Password instead of your account password.
-- Confirm SMTP settings in `.env`.
-
----
-
-### Port Already in Use
-
-Run on another port:
-
-```bash
-python app.py --port 8000
-```
-
----
-
-# 📄 License
-
-This project is intended for educational and demonstration purposes.
-
----
-
-# 👨‍💻 Author
-
-Developed as part of the **BharatTrip AI Operations Associate Take-Home Assignment**.
-
-```
-
-This README is suitable for a public GitHub repository and gives anyone enough information to clone the project, configure it, and run it locally with minimal setup.
+- Add CSV/Excel/PDF export reports
+- Add admin-configurable email templates
+- Add advanced ticket search and custom filters
+- Add AI analytics and operational dashboards
+- Add file attachment storage and secure uploads
+- Add role management and admin settings
